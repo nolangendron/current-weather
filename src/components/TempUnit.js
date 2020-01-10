@@ -19,7 +19,7 @@ useEffect(()=>{
 }, [tempCel])
   return (
     <div>
-      <button className="tempUnitButton" onClick={changeTempUnit}>{temp} {String.fromCharCode(176)} {tempUnit}</button>
+      <button className="tempUnitButton" onClick={changeTempUnit}><h2>{temp} {String.fromCharCode(176)} <span className="tempUnit">{tempUnit}</span></h2></button>
     </div>
  
   )

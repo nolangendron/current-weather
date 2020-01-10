@@ -41,15 +41,15 @@ useEffect(()=>{
 }, [lat, lon])
 
   return (
-<div>
-  {weather ? (
+<div className="container">
+  {!name ? (<h2>Loading...</h2>) : (
   <div>
     <h2>{name}, {country}</h2><br/>
     <TempUnit tempCel={tempCel} tempFah={tempFah}/>
     <h2>{description}</h2><br/>
     <Icons currentIcon={currentIcon} />
   </div>
-  ) : (<h2>Loading</h2>)}
+  )}
 </div>
 
   );

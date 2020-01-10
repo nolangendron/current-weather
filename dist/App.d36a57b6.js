@@ -42479,7 +42479,9 @@ const TempUnit = ({
   return _react.default.createElement("div", null, _react.default.createElement("button", {
     className: "tempUnitButton",
     onClick: changeTempUnit
-  }, temp, " ", String.fromCharCode(176), " ", tempUnit));
+  }, _react.default.createElement("h2", null, temp, " ", String.fromCharCode(176), " ", _react.default.createElement("span", {
+    className: "tempUnit"
+  }, tempUnit))));
 };
 
 exports.TempUnit = TempUnit;
@@ -42542,12 +42544,14 @@ const App = () => {
 
     getWeather(lat, lon);
   }, [lat, lon]);
-  return _react.default.createElement("div", null, weather ? _react.default.createElement("div", null, _react.default.createElement("h2", null, name, ", ", country), _react.default.createElement("br", null), _react.default.createElement(_TempUnit.TempUnit, {
+  return _react.default.createElement("div", {
+    className: "container"
+  }, !name ? _react.default.createElement("h2", null, "Loading...") : _react.default.createElement("div", null, _react.default.createElement("h2", null, name, ", ", country), _react.default.createElement("br", null), _react.default.createElement(_TempUnit.TempUnit, {
     tempCel: tempCel,
     tempFah: tempFah
   }), _react.default.createElement("h2", null, description), _react.default.createElement("br", null), _react.default.createElement(_Icons.Icons, {
     currentIcon: currentIcon
-  })) : _react.default.createElement("h2", null, "Loading"));
+  })));
 };
 
 (0, _reactDom.render)(_react.default.createElement(App, null), document.getElementById("root"));
