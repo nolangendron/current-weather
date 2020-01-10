@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react";
 import { render } from "react-dom";
-import {usePosition} from './getLocation';
+import {usePosition} from './utils/getLocation';
 import {Icons} from "./components/Icons";
+import {getIcon} from "./utils/getIcons"
 
 const App = () => {
 const [weather, setWeather] = useState({
@@ -13,6 +14,7 @@ const [weather, setWeather] = useState({
 
 const {name, country, temp, description} = weather;
 const currentTempInCelsius = Math.round(temp * 10) / 10;
+const currentIcon = getIcon(description)
 
 const {latitude, longitude} = usePosition();
 const lat = latitude;
@@ -40,7 +42,7 @@ useEffect(()=>{
     <h2>{name}, {country}</h2><br/>
     <h2>{currentTempInCelsius} {String.fromCharCode(176)}</h2><br/>
     <h2>{description}</h2><br/>
-    <Icons description={description} />
+    <Icons currentIcon={currentIcon} />
   </div>
   ) : (<h2>Loading</h2>)}
 </div>
