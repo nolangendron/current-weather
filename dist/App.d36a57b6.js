@@ -31730,7 +31730,7 @@ if ("development" === 'production') {
 } else {
   module.exports = require('./cjs/react-dom.development.js');
 }
-},{"./cjs/react-dom.development.js":"../node_modules/react-dom/cjs/react-dom.development.js"}],"getLocation.js":[function(require,module,exports) {
+},{"./cjs/react-dom.development.js":"../node_modules/react-dom/cjs/react-dom.development.js"}],"utils/getLocation.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -35515,7 +35515,31 @@ FontAwesomeIcon.defaultProps = {
   swapOpacity: false
 };
 var convertCurry = convert.bind(null, _react.default.createElement);
-},{"@fortawesome/fontawesome-svg-core":"../node_modules/@fortawesome/fontawesome-svg-core/index.es.js","prop-types":"../node_modules/prop-types/index.js","react":"../node_modules/react/index.js"}],"../node_modules/@fortawesome/free-solid-svg-icons/index.es.js":[function(require,module,exports) {
+},{"@fortawesome/fontawesome-svg-core":"../node_modules/@fortawesome/fontawesome-svg-core/index.es.js","prop-types":"../node_modules/prop-types/index.js","react":"../node_modules/react/index.js"}],"components/Icons.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Icons = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _reactFontawesome = require("@fortawesome/react-fontawesome");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const Icons = ({
+  currentIcon
+}) => {
+  return _react.default.createElement(_reactFontawesome.FontAwesomeIcon, {
+    icon: currentIcon,
+    size: "10x"
+  });
+};
+
+exports.Icons = Icons;
+},{"react":"../node_modules/react/index.js","@fortawesome/react-fontawesome":"../node_modules/@fortawesome/react-fontawesome/index.es.js"}],"../node_modules/@fortawesome/free-solid-svg-icons/index.es.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -42291,70 +42315,56 @@ var _iconsCache = {
   faYinYang: faYinYang
 };
 exports.fas = _iconsCache;
-},{}],"components/Icons.js":[function(require,module,exports) {
+},{}],"utils/getIcons.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Icons = void 0;
-
-var _react = _interopRequireDefault(require("react"));
-
-var _reactFontawesome = require("@fortawesome/react-fontawesome");
+exports.getIcon = void 0;
 
 var _freeSolidSvgIcons = require("@fortawesome/free-solid-svg-icons");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+const getIcon = desc => {
+  var descLowerCase = desc.toLowerCase();
 
-const Icons = ({
-  description
-}) => {
-  function getIcon(desc) {
-    var descLowerCase = desc.toLowerCase();
+  switch (descLowerCase) {
+    case 'drizzle':
+      return _freeSolidSvgIcons.faCloudRain;
 
-    switch (descLowerCase) {
-      case 'drizzle':
-        return _freeSolidSvgIcons.faCloudRain;
+    case 'clouds':
+      return _freeSolidSvgIcons.faCloud;
 
-      case 'clouds':
-        return _freeSolidSvgIcons.faCloud;
+    case 'rain':
+      return _freeSolidSvgIcons.faCloudShowersHeavy;
 
-      case 'rain':
-        return _freeSolidSvgIcons.faCloudShowersHeavy;
+    case 'snow':
+      return _freeSolidSvgIcons.faSnowflake;
 
-      case 'snow':
-        return _freeSolidSvgIcons.faSnowflake;
+    case 'clear':
+      return _freeSolidSvgIcons.faSun;
 
-      case 'clear':
-        return _freeSolidSvgIcons.faSun;
+    case 'thunderstorm':
+      return _freeSolidSvgIcons.faPooStorm;
 
-      case 'thunderstorm':
-        return _freeSolidSvgIcons.faPooStorm;
-
-      default:
-        return null;
-    }
+    default:
+      return null;
   }
-
-  const currentIcon = getIcon(description);
-  return _react.default.createElement(_reactFontawesome.FontAwesomeIcon, {
-    icon: currentIcon,
-    size: "10x"
-  });
 };
 
-exports.Icons = Icons;
-},{"react":"../node_modules/react/index.js","@fortawesome/react-fontawesome":"../node_modules/@fortawesome/react-fontawesome/index.es.js","@fortawesome/free-solid-svg-icons":"../node_modules/@fortawesome/free-solid-svg-icons/index.es.js"}],"App.js":[function(require,module,exports) {
+exports.getIcon = getIcon;
+},{"@fortawesome/free-solid-svg-icons":"../node_modules/@fortawesome/free-solid-svg-icons/index.es.js"}],"App.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireWildcard(require("react"));
 
 var _reactDom = require("react-dom");
 
-var _getLocation = require("./getLocation");
+var _getLocation = require("./utils/getLocation");
 
 var _Icons = require("./components/Icons");
+
+var _getIcons = require("./utils/getIcons");
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
@@ -42374,6 +42384,7 @@ const App = () => {
     description
   } = weather;
   const currentTempInCelsius = Math.round(temp * 10) / 10;
+  const currentIcon = (0, _getIcons.getIcon)(description);
   const {
     latitude,
     longitude
@@ -42396,12 +42407,12 @@ const App = () => {
     getWeather(lat, lon);
   }, [lat, lon]);
   return _react.default.createElement("div", null, weather ? _react.default.createElement("div", null, _react.default.createElement("h2", null, name, ", ", country), _react.default.createElement("br", null), _react.default.createElement("h2", null, currentTempInCelsius, " ", String.fromCharCode(176)), _react.default.createElement("br", null), _react.default.createElement("h2", null, description), _react.default.createElement("br", null), _react.default.createElement(_Icons.Icons, {
-    description: description
+    currentIcon: currentIcon
   })) : _react.default.createElement("h2", null, "Loading"));
 };
 
 (0, _reactDom.render)(_react.default.createElement(App, null), document.getElementById("root"));
-},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./getLocation":"getLocation.js","./components/Icons":"components/Icons.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./utils/getLocation":"utils/getLocation.js","./components/Icons":"components/Icons.js","./utils/getIcons":"utils/getIcons.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -42429,7 +42440,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56028" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60999" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
