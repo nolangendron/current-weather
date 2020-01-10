@@ -3,17 +3,18 @@ import { render } from "react-dom";
 import {usePosition} from './utils/getLocation';
 import {Icons} from "./components/Icons";
 import {getIcon} from "./utils/getIcons"
+import { TempUnit } from "./components/TempUnit";
 
 const App = () => {
 const [weather, setWeather] = useState({
   name: '',
   country: '',
-  temp: '',
+  tempCel: "",
+  tempFah: "",
   description: '',
 });
 
-const {name, country, temp, description} = weather;
-const currentTempInCelsius = Math.round(temp * 10) / 10;
+const {name, country, tempCel, tempFah, description} = weather;
 const currentIcon = getIcon(description)
 
 const {latitude, longitude} = usePosition();
@@ -25,10 +26,14 @@ useEffect(()=>{
     const url = `https://fcc-weather-api.glitch.me/api/current?lat=${lat}&lon=${lon}`;
     const response = await fetch(url);
     const data = await response.json();
+    const currentTempInCel = Math.round(parseInt(data.main.temp * 10) / 10);
+    const currentTempInFah = Math.round(parseInt(data.main.temp * 9 / 5 + 32));
+  
     setWeather({
       name: data.name,
       country: data.sys.country,
-      temp: data.main.temp,
+      tempCel: currentTempInCel,
+      tempFah: currentTempInFah,
       description: data.weather[0].main,
       })
     }
@@ -40,7 +45,7 @@ useEffect(()=>{
   {weather ? (
   <div>
     <h2>{name}, {country}</h2><br/>
-    <h2>{currentTempInCelsius} {String.fromCharCode(176)}</h2><br/>
+    <TempUnit tempCel={tempCel} tempFah={tempFah}/>
     <h2>{description}</h2><br/>
     <Icons currentIcon={currentIcon} />
   </div>

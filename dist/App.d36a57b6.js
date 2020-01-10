@@ -42353,7 +42353,137 @@ const getIcon = desc => {
 };
 
 exports.getIcon = getIcon;
-},{"@fortawesome/free-solid-svg-icons":"../node_modules/@fortawesome/free-solid-svg-icons/index.es.js"}],"App.js":[function(require,module,exports) {
+},{"@fortawesome/free-solid-svg-icons":"../node_modules/@fortawesome/free-solid-svg-icons/index.es.js"}],"../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+var bundleURL = null;
+
+function getBundleURLCached() {
+  if (!bundleURL) {
+    bundleURL = getBundleURL();
+  }
+
+  return bundleURL;
+}
+
+function getBundleURL() {
+  // Attempt to find the URL of the current script and use that as the base URL
+  try {
+    throw new Error();
+  } catch (err) {
+    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
+
+    if (matches) {
+      return getBaseURL(matches[0]);
+    }
+  }
+
+  return '/';
+}
+
+function getBaseURL(url) {
+  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)\/[^/]+$/, '$1') + '/';
+}
+
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+},{}],"../node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
+var bundle = require('./bundle-url');
+
+function updateLink(link) {
+  var newLink = link.cloneNode();
+
+  newLink.onload = function () {
+    link.remove();
+  };
+
+  newLink.href = link.href.split('?')[0] + '?' + Date.now();
+  link.parentNode.insertBefore(newLink, link.nextSibling);
+}
+
+var cssTimeout = null;
+
+function reloadCSS() {
+  if (cssTimeout) {
+    return;
+  }
+
+  cssTimeout = setTimeout(function () {
+    var links = document.querySelectorAll('link[rel="stylesheet"]');
+
+    for (var i = 0; i < links.length; i++) {
+      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
+        updateLink(links[i]);
+      }
+    }
+
+    cssTimeout = null;
+  }, 50);
+}
+
+module.exports = reloadCSS;
+},{"./bundle-url":"../node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"components/tempUnit.css":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"components/TempUnit.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.TempUnit = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+require("./tempUnit.css");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+const TempUnit = ({
+  tempCel,
+  tempFah
+}) => {
+  const [currentTempUnit, setCurrentTempUnit] = (0, _react.useState)({
+    tempUnit: "",
+    temp: ""
+  });
+  const {
+    tempUnit,
+    temp
+  } = currentTempUnit;
+
+  const changeTempUnit = e => {
+    e.preventDefault();
+
+    if (tempUnit === "C") {
+      setCurrentTempUnit({
+        tempUnit: "F",
+        temp: tempFah
+      });
+    } else {
+      setCurrentTempUnit({
+        tempUnit: "C",
+        temp: tempCel
+      });
+    }
+  };
+
+  (0, _react.useEffect)(() => {
+    setCurrentTempUnit({
+      tempUnit: "C",
+      temp: tempCel
+    });
+  }, [tempCel]);
+  return _react.default.createElement("div", null, _react.default.createElement("button", {
+    className: "tempUnitButton",
+    onClick: changeTempUnit
+  }, temp, " ", String.fromCharCode(176), " ", tempUnit));
+};
+
+exports.TempUnit = TempUnit;
+},{"react":"../node_modules/react/index.js","./tempUnit.css":"components/tempUnit.css"}],"App.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireWildcard(require("react"));
@@ -42366,6 +42496,8 @@ var _Icons = require("./components/Icons");
 
 var _getIcons = require("./utils/getIcons");
 
+var _TempUnit = require("./components/TempUnit");
+
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -42374,16 +42506,17 @@ const App = () => {
   const [weather, setWeather] = (0, _react.useState)({
     name: '',
     country: '',
-    temp: '',
+    tempCel: "",
+    tempFah: "",
     description: ''
   });
   const {
     name,
     country,
-    temp,
+    tempCel,
+    tempFah,
     description
   } = weather;
-  const currentTempInCelsius = Math.round(temp * 10) / 10;
   const currentIcon = (0, _getIcons.getIcon)(description);
   const {
     latitude,
@@ -42396,23 +42529,29 @@ const App = () => {
       const url = `https://fcc-weather-api.glitch.me/api/current?lat=${lat}&lon=${lon}`;
       const response = await fetch(url);
       const data = await response.json();
+      const currentTempInCel = Math.round(parseInt(data.main.temp * 10) / 10);
+      const currentTempInFah = Math.round(parseInt(data.main.temp * 9 / 5 + 32));
       setWeather({
         name: data.name,
         country: data.sys.country,
-        temp: data.main.temp,
+        tempCel: currentTempInCel,
+        tempFah: currentTempInFah,
         description: data.weather[0].main
       });
     };
 
     getWeather(lat, lon);
   }, [lat, lon]);
-  return _react.default.createElement("div", null, weather ? _react.default.createElement("div", null, _react.default.createElement("h2", null, name, ", ", country), _react.default.createElement("br", null), _react.default.createElement("h2", null, currentTempInCelsius, " ", String.fromCharCode(176)), _react.default.createElement("br", null), _react.default.createElement("h2", null, description), _react.default.createElement("br", null), _react.default.createElement(_Icons.Icons, {
+  return _react.default.createElement("div", null, weather ? _react.default.createElement("div", null, _react.default.createElement("h2", null, name, ", ", country), _react.default.createElement("br", null), _react.default.createElement(_TempUnit.TempUnit, {
+    tempCel: tempCel,
+    tempFah: tempFah
+  }), _react.default.createElement("h2", null, description), _react.default.createElement("br", null), _react.default.createElement(_Icons.Icons, {
     currentIcon: currentIcon
   })) : _react.default.createElement("h2", null, "Loading"));
 };
 
 (0, _reactDom.render)(_react.default.createElement(App, null), document.getElementById("root"));
-},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./utils/getLocation":"utils/getLocation.js","./components/Icons":"components/Icons.js","./utils/getIcons":"utils/getIcons.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","./utils/getLocation":"utils/getLocation.js","./components/Icons":"components/Icons.js","./utils/getIcons":"utils/getIcons.js","./components/TempUnit":"components/TempUnit.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -42440,7 +42579,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60999" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51012" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
