@@ -42476,12 +42476,16 @@ const TempUnit = ({
       temp: tempCel
     });
   }, [tempCel]);
-  return _react.default.createElement("div", null, _react.default.createElement("button", {
+  return _react.default.createElement("div", {
+    className: "tooltip"
+  }, _react.default.createElement("button", {
     className: "tempUnitButton",
     onClick: changeTempUnit
   }, _react.default.createElement("h2", null, temp, " ", String.fromCharCode(176), " ", _react.default.createElement("span", {
     className: "tempUnit"
-  }, tempUnit))));
+  }, tempUnit))), _react.default.createElement("span", {
+    className: "tooltiptext"
+  }, "Click to change temperature scale"));
 };
 
 exports.TempUnit = TempUnit;

@@ -9,3 +9,28 @@
 .tempUnit {
   color: #006dcc;
 }
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 200px;
+  background-color: #fff;
+  color: #000;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 75%;
+  left: 50%;
+  margin-left: -100px;
+  font-size: 1.5em;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}

@@ -18,8 +18,9 @@ useEffect(()=>{
   setCurrentTempUnit({tempUnit: "C", temp: tempCel})
 }, [tempCel])
   return (
-    <div>
+    <div className="tooltip">
       <button className="tempUnitButton" onClick={changeTempUnit}><h2>{temp} {String.fromCharCode(176)} <span className="tempUnit">{tempUnit}</span></h2></button>
+      <span className="tooltiptext">Click to change temperature scale</span>
     </div>
  
   )
